@@ -29,7 +29,6 @@ class ImageToSketchConverter:
         self.root = root
         self.root.title("Image to Sketch Converter")
        
-        # Create widgets
         self.label = tk.Label(root, text="Select an image:")
         self.label.pack(pady=10)
        
@@ -47,30 +46,24 @@ class ImageToSketchConverter:
         if file_path:
             self.image_path = file_path
             self.image = Image.open(file_path)
-            self.image = self.image.resize((400, 400))  # Resize the image to fit the canvas
+            self.image = self.image.resize((400, 400))  
             self.photo = ImageTk.PhotoImage(self.image)
             self.canvas.create_image(0, 0, anchor=tk.NW, image=self.photo)
-            self.canvas.image = self.photo  # Keep a reference to avoid garbage collection
+            self.canvas.image = self.photo  
 
     def convert_to_sketch(self):
         if hasattr(self, 'image_path'):
             sketch = convert_to_sketch(self.image_path)
-            
-            # Convert the sketch (numpy array) to PIL Image for display in Tkinter
             sketch_pil = Image.fromarray(sketch)
-            sketch_pil = sketch_pil.convert("RGB")  # Convert to RGB mode for Tkinter
-            sketch_pil = sketch_pil.resize((400, 400))  # Resize to fit the canvas
-
-            # Convert to ImageTk for Tkinter
+            sketch_pil = sketch_pil.convert("RGB")  
+            sketch_pil = sketch_pil.resize((400, 400)) 
             sketch_photo = ImageTk.PhotoImage(sketch_pil)
-            
-            # Display the sketch on the same canvas
             self.canvas.create_image(0, 0, anchor=tk.NW, image=sketch_photo)
-            self.canvas.image = sketch_photo  # Keep a reference to avoid garbage collection
+            self.canvas.image = sketch_photo 
         else:
             messagebox.showwarning("Warning", "Please choose an image first.")
 
-# Create the main window
+
 root = tk.Tk()
 app = ImageToSketchConverter(root)
 root.mainloop()
